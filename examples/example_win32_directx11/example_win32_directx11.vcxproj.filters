@@ -30,6 +30,18 @@
     <ClInclude Include="Windows_api_CPU.hpp">
       <Filter>sources</Filter>
     </ClInclude>
+    <ClInclude Include="Graphs.hpp">
+      <Filter>sources</Filter>
+    </ClInclude>
+    <ClInclude Include="Collect_processes.hpp">
+      <Filter>sources</Filter>
+    </ClInclude>
+    <ClInclude Include="Drawing_Panels_and_Matrix.hpp">
+      <Filter>sources</Filter>
+    </ClInclude>
+    <ClInclude Include="Windows_api_NET.hpp">
+      <Filter>sources</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\imgui.cpp">
@@ -60,6 +72,36 @@
       <Filter>sources</Filter>
     </ClCompile>
     <ClCompile Include="Image_load.hpp">
+      <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Colors.hpp">
+      <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphs.cpp">
+      <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Windows_api_RAM.cpp">
+      <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Windows_api_CPU.cpp">
+      <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Windows_api_NET.cpp">
+      <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Collect_processes.cpp">
+      <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Drawing_Panels_and_Matrix.cpp">
+      <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Colors.cpp">
+      <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Image_load.cpp">
+      <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="App_icons.cpp">
       <Filter>sources</Filter>
     </ClCompile>
   </ItemGroup>

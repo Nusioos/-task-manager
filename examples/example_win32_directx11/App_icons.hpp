@@ -4,45 +4,17 @@
 #include <tlhelp32.h>
 #include <psapi.h>
 #include <shellapi.h>
-
+#include"Windows_api_RAM.hpp"
+#include"imgui.h"
+#include <d3d11.h>
+#include<unordered_map>
 using namespace std;
 
- inline wstring GetProcessPath(HANDLE hProcess)
-{
-    wstring path;
-    if (hProcess)
-    {
-        wchar_t buffer[MAX_PATH];
-        DWORD size = MAX_PATH;
-        if (QueryFullProcessImageNameW(hProcess, 0, buffer, &size)) //get name of the image 
-        {
-            path = buffer;
-        }
-        //CloseHandle(hProcess);
-    }
-    //wcout << path << "<-- path\n";
-    return path;
-}
- inline HICON GetIconForFile(const wstring& path)
- {
-     if (path.empty()) return nullptr;
-     SHFILEINFOW sfi = {};
-     if (SHGetFileInfoW(path.c_str(), 0, &sfi, sizeof(sfi), SHGFI_ICON | SHGFI_LARGEICON))
-         return sfi.hIcon;
-     return nullptr;
- }
- inline HICON Get_icon(HANDLE hProcess)
-{
-    wstring exePath = GetProcessPath(hProcess);
-    if (!exePath.empty())
-    {
-        HICON hIcon = GetIconForFile(exePath);
-        if (hIcon)
-        {
-            return hIcon;
-        }
-    }
-   // CloseHandle(hProcess);
-    return nullptr;
-}
+static unordered_map<wstring, ID3D11ShaderResourceView*> g_iconCache;
+static unordered_map<wstring, ImVec2> g_iconSizeCache;
 
+wstring GetProcessPath(HANDLE hProcess);
+HICON GetIconForFile(const wstring& path);
+HICON Get_icon(HANDLE hProcess);
+void proces_icon_test(int index, vector<ProcInfo>& processes, ImVec2 icon_place, int w, int h, ID3D11Device* g_pd3dDevice);
+bool LoadIconAsTexture(HICON hIcon, ID3D11Device* device, ID3D11ShaderResourceView** outSRV, int* outWidth, int* outHeight);

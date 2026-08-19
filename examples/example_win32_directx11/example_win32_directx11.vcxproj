@@ -155,7 +155,11 @@
     <ClInclude Include="..\..\backends\imgui_impl_dx11.h" />
     <ClInclude Include="..\..\backends\imgui_impl_win32.h" />
     <ClInclude Include="App_icons.hpp" />
+    <ClInclude Include="Collect_processes.hpp" />
+    <ClInclude Include="Drawing_Panels_and_Matrix.hpp" />
+    <ClInclude Include="Graphs.hpp" />
     <ClInclude Include="Windows_api_CPU.hpp" />
+    <ClInclude Include="Windows_api_NET.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\imgui.cpp" />
@@ -165,8 +169,18 @@
     <ClCompile Include="..\..\imgui_widgets.cpp" />
     <ClCompile Include="..\..\backends\imgui_impl_dx11.cpp" />
     <ClCompile Include="..\..\backends\imgui_impl_win32.cpp" />
+    <ClCompile Include="App_icons.cpp" />
+    <ClCompile Include="Collect_processes.cpp" />
+    <ClCompile Include="Colors.cpp" />
+    <ClCompile Include="Colors.hpp" />
+    <ClCompile Include="Drawing_Panels_and_Matrix.cpp" />
+    <ClCompile Include="Graphs.cpp" />
+    <ClCompile Include="Image_load.cpp" />
     <ClCompile Include="Image_load.hpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Windows_api_CPU.cpp" />
+    <ClCompile Include="Windows_api_NET.cpp" />
+    <ClCompile Include="Windows_api_RAM.cpp" />
     <ClCompile Include="Windows_api_RAM.hpp" />
   </ItemGroup>
   <ItemGroup>
