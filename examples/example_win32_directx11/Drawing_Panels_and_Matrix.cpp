@@ -122,10 +122,13 @@ void DrawMergedMatrix(ImDrawList* draw_list, const ImVec2& origin, const vector<
     }
 }
 
+//Drawing of the side Panel to see processes info
 void DrawSidePanel(vector<ProcInfo>& processes, float totalPhysMB, ImVec2 origin, ImDrawList* draw_list, ID3D11Device* g_pd3dDevice)
 {
     ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.25f, 0.25f, 0.25f, 1.0f));
     float panel_width = 250.0f;
+    float size_of_close_process_x = 120.0f;
+    float size_of_close_process_y = 30.0f;
     ImVec2 widget_pos = ImVec2(origin.x + 610, origin.y + 12);
     ImGui::SetNextWindowPos(widget_pos);
     ImGui::SetNextWindowSize(ImVec2(180, 648));
@@ -137,8 +140,9 @@ void DrawSidePanel(vector<ProcInfo>& processes, float totalPhysMB, ImVec2 origin
 
         ProcInfo& p = processes[selected_process];
         int index = (int)selected_process;
-        ImVec2 icon_pos = ImVec2(widget_pos.x + 5, widget_pos.y);
+        ImVec2 icon_pos = ImVec2(widget_pos.x + 5, widget_pos.y+10);
         proces_icon_test(index, processes, icon_pos, 35, 35, g_pd3dDevice);
+        ImGui::Text("\n");
         ImGui::Text("\n");
         ImGui::Text("\n");
         ImGui::Text("Proces: %s", WStringToString(p.name).c_str());
@@ -150,6 +154,21 @@ void DrawSidePanel(vector<ProcInfo>& processes, float totalPhysMB, ImVec2 origin
         ImGui::Text("CPU: %.2f %%", p.cpu_usage);
         UpdateAndDrawUI_RAM_process(draw_list, widget_pos, p);
         UpdateAndDrawUI_CPU_process(draw_list, widget_pos, p);
+        //Close Panel drawing
+        ImGui::SetCursorPos(ImVec2(5, 610));
+        ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 1.0f, 1.0f, 1.0f));
+        ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.8f, 0.2f, 0.2f, 1.0f));       
+        ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.9f, 0.3f, 0.3f, 1.0f));
+        ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.6f, 0.1f, 0.1f, 1.0f));
+        ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 5.0f);
+        if (ImGui::Button("Close process", ImVec2(size_of_close_process_x, size_of_close_process_y)))
+        {
+            kill_process(p.PID);
+            cout << "Close finished" << endl;
+        }
+        ImGui::PopStyleVar(1);
+        ImGui::PopStyleColor(4);
+
     }
     else
     {
@@ -159,9 +178,28 @@ void DrawSidePanel(vector<ProcInfo>& processes, float totalPhysMB, ImVec2 origin
     ImGui::EndChild();
     ImGui::PopStyleColor();
 }
-string WStringToString(const wstring& wstr) {
+//Wstring to string conversion
+    string WStringToString(const wstring& wstr) {
     using convert_type = codecvt_utf8<wchar_t>;
     wstring_convert<convert_type, wchar_t> converter;
     return converter.to_bytes(wstr);
 }
 
+bool kill_process(DWORD PID)
+{
+    HANDLE hProcess = OpenProcess(PROCESS_TERMINATE, FALSE, PID);
+    if (hProcess == NULL) {
+        cerr << "Failed to open process. Error code: " << GetLastError() << endl;
+        return false;
+    }
+    //exit code 0 
+    BOOL result = TerminateProcess(hProcess, 0);
+    if (!result) {
+        cerr << "Failed to terminate process. Error code: " << GetLastError() <<  endl;
+    }
+    else {
+        cout << "Successfully terminated process ID: " << PID << endl;
+    }
+    CloseHandle(hProcess);
+    return result != 0;
+}

@@ -29,6 +29,6 @@ extern vector<vector<int>> g_matrix_under;
 extern vector<vector<int>> g_matrix_under_small;
 extern DOUBLE g_whole_size;
 extern DOUBLE totalPhysMB_g;
-
+//koms
 vector<ProcInfo> collect_processes(DOUBLE& whole_size);
 void collect_processes_time();

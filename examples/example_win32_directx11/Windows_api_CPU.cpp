@@ -3,7 +3,7 @@
 #include "Windows_api_CPU.hpp"
 using namespace std;
 
- ULONGLONG FileTimeToQuad(const FILETIME& ft) {
+ULONGLONG FileTimeToQuad(const FILETIME& ft) {
     return (static_cast<ULONGLONG>(ft.dwHighDateTime) << 32) | ft.dwLowDateTime; //bit manip smart storing time 
 }
 bool Get_system_CPU_info(CpuSample& sample)
@@ -11,7 +11,7 @@ bool Get_system_CPU_info(CpuSample& sample)
     return GetSystemTimes(&sample.idle, &sample.kernel, &sample.user) != 0;
 }
 
- bool Get_process_CPU_info(HANDLE curr_process, CpuSample& sample)
+bool Get_process_CPU_info(HANDLE curr_process, CpuSample& sample)
 {
 
 
@@ -27,7 +27,7 @@ bool Get_system_CPU_info(CpuSample& sample)
     sample.user = ftUser;
     return true;
 }
- double Compute_Cpu_Usage(const CpuSample& s1, const CpuSample& s2,
+double Compute_Cpu_Usage(const CpuSample& s1, const CpuSample& s2,
     const FILETIME& sysBefore, const FILETIME& sysAfter)
 {
     SYSTEM_INFO sysInfo;
@@ -62,7 +62,7 @@ bool Get_system_CPU_info(CpuSample& sample)
 
     return result;
 }
- double Compute_System_Cpu_Usage(const CpuSample& s1, const CpuSample& s2)
+double Compute_System_Cpu_Usage(const CpuSample& s1, const CpuSample& s2)
 {
     ULONGLONG idle1 = FileTimeToQuad(s1.idle);
     ULONGLONG kernel1 = FileTimeToQuad(s1.kernel);
@@ -85,3 +85,27 @@ bool Get_system_CPU_info(CpuSample& sample)
 
     return (1.0 - (double)deltaIdle / (double)deltaTotal) * 100.0;
 }
+/*
+void creation_time_hprocess(HANDLE curr_process)
+{
+    if (curr_process != NULL && curr_process != INVALID_HANDLE_VALUE) {
+        FILETIME ftCreation, ftExit, ftKernel, ftUser;
+
+        if (GetProcessTimes(curr_process, &ftCreation, &ftExit, &ftKernel, &ftUser)) {
+            ULONGLONG startTime, currentTime;
+
+            startTime = FileTimeToQuad(ftCreation);
+
+            FILETIME ftCurrent;
+            GetSystemTimeAsFileTime(&ftCurrent);
+            currentTime = FileTimeToQuad(ftCurrent);
+
+
+            double uptimeSeconds = static_cast<double>(currentTime - startTime) / 10000000.0;
+            DWORD processId = GetProcessId(curr_process);
+
+            std::cout << "PID " << processId << " uptime: " << uptimeSeconds << " seconds.\n";
+        }
+    }
+}
+*/

@@ -63,10 +63,10 @@ static DOUBLE last_sample_time_CPU = 0.0;
 static DOUBLE last_sample_time_RAM_process = 0.0;
 static DOUBLE last_sample_time_CPU_process = 0.0;
 
- static ID3D11ShaderResourceView* g_srvDOW = nullptr;
- static ID3D11ShaderResourceView* g_srvUPL = nullptr;
- static ID3D11ShaderResourceView* g_srvRAM = nullptr;
- static ID3D11ShaderResourceView* g_srvCPU = nullptr;
+extern ID3D11ShaderResourceView* g_srvDOW;
+extern ID3D11ShaderResourceView* g_srvUPL;
+extern ID3D11ShaderResourceView* g_srvRAM;
+extern ID3D11ShaderResourceView* g_srvCPU;
 
 static CpuSample g_prevSample;
 static bool g_haveSample = false;
@@ -79,11 +79,11 @@ static float Refresh_time = 0.1;
 
 ImVec2 Map_pixel_to_screen(DOUBLE x, DOUBLE y, DOUBLE x_min, DOUBLE x_max, DOUBLE y_min, DOUBLE y_max, ImVec2 placing, ImVec2 size);
 
-void FindMinMax(const Graph_buffer& buffer, DOUBLE time_min, DOUBLE time_max,float& out_min, float& out_max);
+void FindMinMax(const Graph_buffer& buffer, DOUBLE time_min, DOUBLE time_max, float& out_min, float& out_max);
 void Draw_graph_pixels(ImDrawList* draw_list, const Graph_buffer& buffer, ImVec2 placing, ImVec2 size, DOUBLE time_now, DOUBLE time_period, int id);
-void Draw_graph(ImDrawList* draw_list, const ImVec2& origin, DOUBLE size_x, DOUBLE size_y,Pos place, int time_period, const Graph_buffer& buffer, DOUBLE time_now, int id);
+void Draw_graph(ImDrawList* draw_list, const ImVec2& origin, DOUBLE size_x, DOUBLE size_y, Pos place, int time_period, const Graph_buffer& buffer, DOUBLE time_now, int id);
 void UpdateAndDrawUI_RAM(ImDrawList* draw_list, ImVec2 origin, ImFont* fontmed);
 void UpdateAndDrawUI_CPU(ImDrawList* draw_list, ImVec2 origin, ImFont* fontmed);
 void UpdateAndDrawUI_NET(ImDrawList* draw_list, ImVec2 origin, ImFont* fontmed);
-void UpdateAndDrawUI_RAM_process(ImDrawList* draw_list, ImVec2 origin, ProcInfo process);
-void UpdateAndDrawUI_CPU_process(ImDrawList* draw_list, ImVec2 origin, ProcInfo process);
+void UpdateAndDrawUI_RAM_process(ImDrawList* draw_list, ImVec2 origin, const ProcInfo& process);
+void UpdateAndDrawUI_CPU_process(ImDrawList* draw_list, ImVec2 origin, const ProcInfo& process);

@@ -31,12 +31,12 @@
 #include"Drawing_Panels_and_Matrix.hpp"
 using namespace std;
 // Data
-static ID3D11Device*            g_pd3dDevice = nullptr;
-static ID3D11DeviceContext*     g_pd3dDeviceContext = nullptr;
-static IDXGISwapChain*          g_pSwapChain = nullptr;
+static ID3D11Device* g_pd3dDevice = nullptr;
+static ID3D11DeviceContext* g_pd3dDeviceContext = nullptr;
+static IDXGISwapChain* g_pSwapChain = nullptr;
 static bool                     g_SwapChainOccluded = false;
 static UINT                     g_ResizeWidth = 0, g_ResizeHeight = 0;
-static ID3D11RenderTargetView*  g_mainRenderTargetView = nullptr;
+static ID3D11RenderTargetView* g_mainRenderTargetView = nullptr;
 static ImFont* fontSmall = nullptr;
 static ImFont* fontmed = nullptr;
 // Forward declarations of helper functions
@@ -58,17 +58,22 @@ static POINT g_DragStartWindow;
 
 //static int selected_process = -1;
 
- vector<ProcInfo> g_processes_shared;
- vector<vector<int>> g_matrix(100, vector<int>(100, -1));
- vector<vector<int>> g_matrix_under(15, vector<int>(88, -1));
- vector<vector<int>> g_matrix_under_small(15, vector<int>(12, -1));
- DOUBLE totalPhysMB_g = 0;
+ID3D11ShaderResourceView* g_srvDOW = nullptr;
+ID3D11ShaderResourceView* g_srvUPL = nullptr;
+ID3D11ShaderResourceView* g_srvRAM = nullptr;
+ID3D11ShaderResourceView* g_srvCPU = nullptr;
 
- mutex g_icon_mutex;
- atomic<bool> g_threadrunning = true;
- thread g_collect;
- DOUBLE g_whole_size = 0;
- mutex g_process_mutex;
+vector<ProcInfo> g_processes_shared;
+vector<vector<int>> g_matrix(100, vector<int>(100, -1));
+vector<vector<int>> g_matrix_under(15, vector<int>(88, -1));
+vector<vector<int>> g_matrix_under_small(15, vector<int>(12, -1));
+DOUBLE totalPhysMB_g = 0;
+
+mutex g_icon_mutex;
+atomic<bool> g_threadrunning = true;
+thread g_collect;
+DOUBLE g_whole_size = 0;
+mutex g_process_mutex;
 
 //static unordered_map<wstring, ID3D11ShaderResourceView*> g_iconCache;
 //static unordered_map<wstring, ImVec2> g_iconSizeCache;
@@ -89,7 +94,7 @@ int main(int, char**)
     WNDCLASSEXW wc = { sizeof(wc), CS_CLASSDC, WndProc, 0L, 0L, GetModuleHandle(nullptr), nullptr, nullptr, nullptr, nullptr, L"ImGui Example", nullptr };
     ::RegisterClassExW(&wc);
     HWND hwnd = ::CreateWindowExW(
-        WS_EX_LAYERED | WS_EX_TOPMOST,  
+        WS_EX_LAYERED | WS_EX_TOPMOST,
         wc.lpszClassName, L"Dear ImGui DirectX11 Example", WS_POPUP,
         0, 0, screen_w, screen_h, nullptr, nullptr, wc.hInstance, nullptr);
     ::SetLayeredWindowAttributes(hwnd, RGB(0, 0, 0), 255, LWA_COLORKEY);
@@ -127,8 +132,8 @@ int main(int, char**)
     ImGui_ImplDX11_Init(g_pd3dDevice, g_pd3dDeviceContext);
 
     // Load Fonts
-    ImFont* fontSmall = io.Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\arial.ttf", 12.0f);
-    ImFont* fontmed = io.Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\arial.ttf", 12.0f);
+    fontSmall = io.Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\arial.ttf", 12.0f);
+    fontmed = io.Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\arial.ttf", 12.0f);
     //IM_ASSERT(font != nullptr);
 
     // Our state
@@ -141,20 +146,7 @@ int main(int, char**)
     {
         cerr << "Warning: ADMIN MODE IS OFF " << endl;
     }
-   DOUBLE whole_size = 0;
-    
-
-    //Windnows API work start
-   vector<ProcInfo> processes= collect_processes(whole_size);
-    //Windnows API work end
-    sort(processes.begin(), processes.end(), [](const ProcInfo& a, const ProcInfo& b)
-        {
-            return a.mb > b.mb;
-        });
-    vector<vector<int>> matrix(100, vector<int>(100, -1));
-    vector<vector<int>> matrix_under_main(15, vector<int>(88, -1));
-    vector<vector<int>> matrix_under_main_small(15, vector<int>(12, -1));
-
+    DOUBLE whole_size = 0;
     MEMORYSTATUSEX memInfo;
     memInfo.dwLength = sizeof(MEMORYSTATUSEX);
     GlobalMemoryStatusEx(&memInfo);
@@ -162,26 +154,24 @@ int main(int, char**)
     DOUBLE totalPhysMB = memInfo.ullTotalPhys / (1024.0 * 1024.0);
     totalPhysMB_g = memInfo.ullTotalPhys / (1024.0 * 1024.0);
     DOUBLE usedPhysMB = totalPhysMB - (memInfo.ullAvailPhys / (1024.0 * 1024.0));
-
-    Create_listing_2(processes, matrix, totalPhysMB,20);
-    Create_listing_with_boudneries(processes, matrix_under_main, totalPhysMB,21,26);
-    int cap_max = min(60, processes.size());
-    Create_listing_with_boudneries(processes, matrix_under_main_small, totalPhysMB, 27, cap_max);
-
-
-    output_apps(processes, usedPhysMB, totalPhysMB);
-
+  
     int x_image = 0;
     int* x = &x_image;
     int y_image = 0;
     int* y = &y_image;
-    
-    LoadTextureWIC(L"DOW_comp.png", g_pd3dDevice, &g_srvDOW, x, y);
+
+    if (!LoadTextureWIC(L"DOW_comp.png", g_pd3dDevice, &g_srvDOW, x, y)) {
+        cout << "Blad" << endl;
+    }
+    else
+    {
+        cout << " dziala" << endl;
+    }
     LoadTextureWIC(L"RAM_comp.png", g_pd3dDevice, &g_srvRAM, x, y);
     LoadTextureWIC(L"CPU_comp.png", g_pd3dDevice, &g_srvCPU, x, y);
     LoadTextureWIC(L"UPL_comp.png", g_pd3dDevice, &g_srvUPL, x, y);
-    
-    debug(matrix);
+
+   // debug(matrix);
     // Main loop
     bool done = false;
     bool app_open = true;
@@ -226,9 +216,9 @@ int main(int, char**)
         ImGui::NewFrame();
         ImGui::SetNextWindowSize(ImVec2(30.0f, 30.0f), ImGuiCond_FirstUseEver);
 
-//START----------------------------------------------------------------------------------------------------------------------
+        //START----------------------------------------------------------------------------------------------------------------------
         ImGui::Begin("MY_APP", &app_open, window_flags);
-   
+
         ImGuiIO& io = ImGui::GetIO();
 
         // Moving window
@@ -258,74 +248,77 @@ int main(int, char**)
                 g_Dragging = false;
             }
         }
+        vector<ProcInfo> local_processes;
+        double local_whole_size = 0;
+        vector<vector<int>> local_matrix;
+        vector<vector<int>> local_matrix_under;
+        vector<vector<int>> local_matrix_under_small;
 
         {
             lock_guard<mutex> lock(g_process_mutex);
-            processes = g_processes_shared;
-            whole_size = g_whole_size;
-            matrix = g_matrix;
-            matrix_under_main = g_matrix_under;
-
+            local_processes = g_processes_shared;
+            local_whole_size = g_whole_size;
+            local_matrix = g_matrix;
+            local_matrix_under = g_matrix_under;
+            local_matrix_under_small = g_matrix_under_small;
         }
-       // draw constructor
-       ImDrawList* draw_list = ImGui::GetWindowDrawList();
-       //screen pos
-       ImVec2 origin = ImGui::GetCursorScreenPos();
-       ImVec2 Matrix_pos = ImVec2(origin.x, origin.y+85);
-       ImVec2 Matrix_pos_under = ImVec2(origin.x, origin.y + 585);
-       ImVec2 Matrix_pos_under_small = ImVec2(origin.x+527, origin.y + 585);
 
-        DrawMergedMatrix(draw_list, Matrix_pos, matrix, processes, totalPhysMB,1,true, g_pd3dDevice,fontmed);
-        DrawMergedMatrix(draw_list, Matrix_pos_under, matrix_under_main, processes, totalPhysMB,2,true, g_pd3dDevice, fontmed);
-        DrawMergedMatrix(draw_list, Matrix_pos_under_small, matrix_under_main_small, processes, totalPhysMB, 3, false, g_pd3dDevice, fontmed);
-  
-       //DRAW UI RAM
-       UpdateAndDrawUI_RAM(draw_list, origin,fontmed);
-       //DRAW UI CPU
-       UpdateAndDrawUI_CPU(draw_list, origin, fontmed);
-       //DRAW UI NET
-       UpdateAndDrawUI_NET(draw_list, origin, fontmed);
-       //Side UI PANEL
-        DrawSidePanel(processes, totalPhysMB,origin,draw_list, g_pd3dDevice);
-       //Prccess amount TEXT
-        int fonst_size_text = 15;
-        ImVec2 process_amount_text_pos = ImVec2(origin.x+5, origin.y + 660);
+        // Draw constructor
+        ImDrawList* draw_list = ImGui::GetWindowDrawList();
+        ImVec2 origin = ImGui::GetCursorScreenPos();
+        ImVec2 Matrix_pos = ImVec2(origin.x, origin.y + 85);
+        ImVec2 Matrix_pos_under = ImVec2(origin.x, origin.y + 585);
+        ImVec2 Matrix_pos_under_small = ImVec2(origin.x + 527, origin.y + 585);
+
+        // Pass local_processes
+        DrawMergedMatrix(draw_list, Matrix_pos, local_matrix, local_processes, totalPhysMB, 1, true, g_pd3dDevice, fontmed);
+        DrawMergedMatrix(draw_list, Matrix_pos_under, local_matrix_under, local_processes, totalPhysMB, 2, true, g_pd3dDevice, fontmed);
+        DrawMergedMatrix(draw_list, Matrix_pos_under_small, local_matrix_under_small, local_processes, totalPhysMB, 3, false, g_pd3dDevice, fontmed);
+
+        // DRAW UI PANELS
+        UpdateAndDrawUI_RAM(draw_list, origin, fontmed);
+        UpdateAndDrawUI_CPU(draw_list, origin, fontmed);
+        UpdateAndDrawUI_NET(draw_list, origin, fontmed);
+        DrawSidePanel(local_processes, totalPhysMB, origin, draw_list, g_pd3dDevice);
+
+        // Process amount TEXT
+        int font_size_text = 15;
+        ImVec2 process_amount_text_pos = ImVec2(origin.x + 5, origin.y + 660);
 
         stringstream stream_process_amount_text;
-        stream_process_amount_text << fixed << setprecision(0) <<"Processes: " << processes.size();
-        string process_amount_text_string = stream_process_amount_text.str();
-        const char* process_amount_text_charptr = process_amount_text_string.c_str();
+        stream_process_amount_text << fixed << setprecision(0) << "Processes: " << local_processes.size();
+        draw_list->AddText(fontSmall, font_size_text, process_amount_text_pos, GetColorById(14), stream_process_amount_text.str().c_str());
 
-        draw_list->AddText(fontSmall, fonst_size_text, process_amount_text_pos, GetColorById(14), process_amount_text_charptr);
-        //Refresh time Text
+        // Refresh time Text
         ImVec2 refresh_time_text_pos = ImVec2(origin.x + 110, origin.y + 660);
-
         stringstream stream_refresh_time_text;
-        stream_refresh_time_text << fixed << setprecision(1) << "Refersh time: " << Refresh_time << "s";
-        string refresh_time_text_string = stream_refresh_time_text.str();
-        const char* refresh_time_text_charptr = refresh_time_text_string.c_str();
+        stream_refresh_time_text << fixed << setprecision(1) << "Refresh time: " << Refresh_time << "s";
+        draw_list->AddText(fontSmall, font_size_text, refresh_time_text_pos, GetColorById(14), stream_refresh_time_text.str().c_str());
 
-        draw_list->AddText(fontSmall, fonst_size_text, refresh_time_text_pos, GetColorById(14), refresh_time_text_charptr);
-      // if (g_iconSRV) g_iconSRV->Release();
-       if (ImGui::IsKeyPressed(ImGuiKey_Escape))
-           done = true;
+        if (ImGui::IsKeyPressed(ImGuiKey_Escape))
+            done = true;
+
         ImGui::End();
- //END--------------------------------------------------------------------------------------------------------------------------
-      if (!app_open)
-        done = true;
+
+        if (!app_open)
+            done = true;
+
         // Rendering
         ImGui::Render();
-       
-        const float clear_color_with_alpha[4] = { clear_color.x * clear_color.w, clear_color.y * clear_color.w, clear_color.z * clear_color.w, clear_color.w };
+
+        const float clear_color_with_alpha[4] = {
+            clear_color.x * clear_color.w,
+            clear_color.y * clear_color.w,
+            clear_color.z * clear_color.w,
+            clear_color.w
+        };
         g_pd3dDeviceContext->OMSetRenderTargets(1, &g_mainRenderTargetView, nullptr);
-        const float clear_color[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
-        g_pd3dDeviceContext->ClearRenderTargetView(g_mainRenderTargetView, clear_color);
         g_pd3dDeviceContext->ClearRenderTargetView(g_mainRenderTargetView, clear_color_with_alpha);
+
         ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 
         // Present
-        HRESULT hr = g_pSwapChain->Present(1, 0);   // Present with vsync
-        //HRESULT hr = g_pSwapChain->Present(0, 0); // Present without vsync
+        HRESULT hr = g_pSwapChain->Present(1, 0); // VSync
         g_SwapChainOccluded = (hr == DXGI_STATUS_OCCLUDED);
     }
     if (g_collect.joinable())

@@ -29,4 +29,4 @@ static int selected_process = -1;
 void DrawMergedMatrix(ImDrawList* draw_list, const ImVec2& origin, const vector<vector<int>>& matrix, vector<ProcInfo>& processes, float totalPhysMB, int which_matrix, bool show_elemetns, ID3D11Device* g_pd3dDevice, ImFont* fontmed);
 void DrawSidePanel(vector<ProcInfo>& processes, float totalPhysMB, ImVec2 origin, ImDrawList* draw_list, ID3D11Device* g_pd3dDevice);
 string WStringToString(const wstring& wstr);
-
+bool kill_process(DWORD PID);

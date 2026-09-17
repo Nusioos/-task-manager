@@ -4,7 +4,7 @@
 
 #include "Windows_api_NET.hpp"
 
- bool Get_network_info(Network_sample& sample)
+bool Get_network_info(Network_sample& sample)
 {
     PMIB_IF_TABLE2 ifTable = nullptr; //ULONG NumEntries;    MIB_IF_ROW2 Table[ANYSIZE_ARRAY];
 
@@ -33,7 +33,7 @@
     FreeMibTable(ifTable);
     return true;
 }
- void Computer_Network_usage(const Network_sample& s1, const Network_sample& s2, double time, double& out_download_KBs, double& out_upload_KBs)
+void Computer_Network_usage(const Network_sample& s1, const Network_sample& s2, double time, double& out_download_KBs, double& out_upload_KBs)
 {
     if (time <= 0)
     {
