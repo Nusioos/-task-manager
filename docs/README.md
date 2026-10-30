@@ -1,16 +1,15 @@
 # Task Manager
 
-A lightweight Windows task manager written in C++ with Dear ImGui and DirectX 11. Instead of a plain list of processes, it shows them as a treemap: every process is a tile, and the size of the tile reflects how much RAM it uses.
+A lightweight Windows task manager written in C++ with Dear ImGui and DirectX 11. Instead of a plain list of processes, it shows them as a treemap every process is a tile, size of the tile reflects how much RAM it uses.
 
 ![Screenshot](screenshot.png)
 
 ## Features
 
-- Live system overview at the top: RAM usage, CPU usage, download speed and upload speed, each with a small history graph.
-- Treemap of all running processes. Larger tiles use more RAM. Each tile shows the process icon, name, RAM usage and CPU usage.
+- RAM usage, CPU usage, download speed and upload speed, each with a small history graph.
+- Treemap of all running processes. Larger tiles use more RAM
 - Details panel on the right. Click a process to see its icon, name, RAM and CPU usage with live graphs.
-- "Close process" button to terminate the selected process.
-- Status bar with the number of running processes and the refresh time.
+- "Close process" button to terminate the selected process.Silver bullet close
 
 ## Requirements
 
