@@ -39,7 +39,7 @@ Steps:
 
 1. Clone the repository:
    ```
-   git clone <repository-url>
+   git clone
    ```
 2. Open the `.sln` file in Visual Studio.
 3. Set the configuration to **Release** and the platform to **x64**.
