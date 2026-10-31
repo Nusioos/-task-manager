@@ -44,7 +44,7 @@ Steps:
 2. Open the `.sln` file in Visual Studio.
 3. Set the configuration to **Release** and the platform to **x64**.
 4. Build the solution (Ctrl+Shift+B).
-5. The executable will be created in `x64\Release`. Copy the image files (`.png`, `.jpg`) and `imgui.ini` from the project folder next to the executable if you want to run it outside of Visual Studio.
+5. The executable will be created in `Release`. Copy the image files (`.png`, `.jpg`) and `imgui.ini` from the project folder next to the executable if you want to run it outside of Visual Studio.
 
 ## Technologies
 
