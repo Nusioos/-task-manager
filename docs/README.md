@@ -18,8 +18,8 @@ A lightweight Windows task manager written in C++ with Dear ImGui and DirectX 11
 
 ## How to run (pre-built version)
 
-1. Go to the **Releases** section of this repository.
-2. Download the latest `.zip` file from the **Assets** list.
+1. Go to the **main** section of this repository.
+2. Download the latest `Task_manager_ready.zip` file from the **Assets** list.
 3. Extract the whole archive to a folder. Do not run the program from inside the zip file, because it needs the image files that are stored next to the executable.
 4. Run `TaskManager.exe`.
 
