@@ -18,10 +18,10 @@ A lightweight Windows task manager written in C++ with Dear ImGui and DirectX 11
 
 ## How to run (pre-built version)
 
-1. Go to the **Releases** section of this repository.
-2. Download the latest `.zip` file from the **Assets** list.
+1. Go to the **main** section of this repository.
+2. Download the latest `Task_manager_ready.zip` file from the **Assets** list.
 3. Extract the whole archive to a folder. Do not run the program from inside the zip file, because it needs the image files that are stored next to the executable.
-4. Run `example_win32_directx11.exe`.
+4. Run `TaskManager.exe`.
 
 Windows SmartScreen may show a warning because the program is not digitally signed. Click **More info**, then **Run anyway**.
 
@@ -39,12 +39,12 @@ Steps:
 
 1. Clone the repository:
    ```
-   git clone <repository-url>
+   git clone
    ```
 2. Open the `.sln` file in Visual Studio.
 3. Set the configuration to **Release** and the platform to **x64**.
 4. Build the solution (Ctrl+Shift+B).
-5. The executable will be created in `x64\Release`. Copy the image files (`.png`, `.jpg`) and `imgui.ini` from the project folder next to the executable if you want to run it outside of Visual Studio.
+5. The executable will be created in `Release`. Copy the image files (`.png`, `.jpg`) and `imgui.ini` from the project folder next to the executable if you want to run it outside of Visual Studio.
 
 ## Technologies
 
