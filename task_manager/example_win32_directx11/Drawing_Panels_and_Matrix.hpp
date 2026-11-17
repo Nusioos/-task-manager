@@ -17,6 +17,7 @@
 #include <iomanip>
 #include "Windows_api_RAM.hpp"
 #include "Windows_api_CPU.hpp"
+#include "time_manager.hpp"
 #include"Image_load.hpp"
 #include"Collect_processes.hpp"
 #include "Colors.hpp"

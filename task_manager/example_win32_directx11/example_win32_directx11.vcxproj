@@ -160,6 +160,7 @@
     <ClInclude Include="Collect_processes.hpp" />
     <ClInclude Include="Drawing_Panels_and_Matrix.hpp" />
     <ClInclude Include="Graphs.hpp" />
+    <ClInclude Include="time_manager.hpp" />
     <ClInclude Include="Windows_api_CPU.hpp" />
     <ClInclude Include="Windows_api_NET.hpp" />
   </ItemGroup>
@@ -174,16 +175,17 @@
     <ClCompile Include="App_icons.cpp" />
     <ClCompile Include="Collect_processes.cpp" />
     <ClCompile Include="Colors.cpp" />
-    <ClCompile Include="Colors.hpp" />
+    <ClInclude Include="Colors.hpp" />
     <ClCompile Include="Drawing_Panels_and_Matrix.cpp" />
     <ClCompile Include="Graphs.cpp" />
     <ClCompile Include="Image_load.cpp" />
-    <ClCompile Include="Image_load.hpp" />
+    <ClInclude Include="Image_load.hpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="time_manager.cpp" />
     <ClCompile Include="Windows_api_CPU.cpp" />
     <ClCompile Include="Windows_api_NET.cpp" />
     <ClCompile Include="Windows_api_RAM.cpp" />
-    <ClCompile Include="Windows_api_RAM.hpp" />
+    <ClInclude Include="Windows_api_RAM.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\misc\debuggers\imgui.natstepfilter" />

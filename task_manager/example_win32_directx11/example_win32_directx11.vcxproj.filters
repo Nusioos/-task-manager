@@ -42,6 +42,18 @@
     <ClInclude Include="Windows_api_NET.hpp">
       <Filter>sources</Filter>
     </ClInclude>
+    <ClInclude Include="Colors.hpp">
+      <Filter>sources</Filter>
+    </ClInclude>
+    <ClInclude Include="Image_load.hpp">
+      <Filter>sources</Filter>
+    </ClInclude>
+    <ClInclude Include="Windows_api_RAM.hpp">
+      <Filter>sources</Filter>
+    </ClInclude>
+    <ClInclude Include="time_manager.hpp">
+      <Filter>sources</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\imgui.cpp">
@@ -68,15 +80,6 @@
     <ClCompile Include="..\..\imgui_tables.cpp">
       <Filter>imgui</Filter>
     </ClCompile>
-    <ClCompile Include="Windows_api_RAM.hpp">
-      <Filter>sources</Filter>
-    </ClCompile>
-    <ClCompile Include="Image_load.hpp">
-      <Filter>sources</Filter>
-    </ClCompile>
-    <ClCompile Include="Colors.hpp">
-      <Filter>sources</Filter>
-    </ClCompile>
     <ClCompile Include="Graphs.cpp">
       <Filter>sources</Filter>
     </ClCompile>
@@ -102,6 +105,9 @@
       <Filter>sources</Filter>
     </ClCompile>
     <ClCompile Include="App_icons.cpp">
+      <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="time_manager.cpp">
       <Filter>sources</Filter>
     </ClCompile>
   </ItemGroup>

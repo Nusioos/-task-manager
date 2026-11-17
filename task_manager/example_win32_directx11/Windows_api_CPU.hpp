@@ -27,3 +27,4 @@ double Compute_Cpu_Usage(const CpuSample& s1, const CpuSample& s2, const FILETIM
 bool Get_process_CPU_info(HANDLE curr_process, CpuSample& sample);
 bool Get_system_CPU_info(CpuSample& sample);
 ULONGLONG FileTimeToQuad(const FILETIME& ft);
+//double creation_time_hprocess(DWORD PID);

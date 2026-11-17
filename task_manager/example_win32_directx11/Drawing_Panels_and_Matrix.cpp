@@ -154,7 +154,15 @@ void DrawSidePanel(vector<ProcInfo>& processes, float totalPhysMB, ImVec2 origin
         ImGui::Text("CPU: %.2f %%", p.cpu_usage);
         UpdateAndDrawUI_RAM_process(draw_list, widget_pos, p);
         UpdateAndDrawUI_CPU_process(draw_list, widget_pos, p);
-        //Close Panel drawing
+
+        double life_time = creation_time_hprocess(p.PID);
+        Clock clock = second_to_Clock(life_time);
+
+        ImGui::Text("\n");
+        ImGui::Text("\n");
+        ImGui::Text("\n");
+        ImGui::Text("LIFE TIME: %02dh:%02dm:%02ds", clock.hours, clock.minutes, clock.seconds);
+        ImGui::Text("\n");
         ImGui::SetCursorPos(ImVec2(5, 610));
         ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 1.0f, 1.0f, 1.0f));
         ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.8f, 0.2f, 0.2f, 1.0f));       
@@ -166,6 +174,7 @@ void DrawSidePanel(vector<ProcInfo>& processes, float totalPhysMB, ImVec2 origin
             kill_process(p.PID);
             cout << "Close finished" << endl;
         }
+
         ImGui::PopStyleVar(1);
         ImGui::PopStyleColor(4);
 

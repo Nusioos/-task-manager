@@ -85,27 +85,5 @@ double Compute_System_Cpu_Usage(const CpuSample& s1, const CpuSample& s2)
 
     return (1.0 - (double)deltaIdle / (double)deltaTotal) * 100.0;
 }
-/*
-void creation_time_hprocess(HANDLE curr_process)
-{
-    if (curr_process != NULL && curr_process != INVALID_HANDLE_VALUE) {
-        FILETIME ftCreation, ftExit, ftKernel, ftUser;
-
-        if (GetProcessTimes(curr_process, &ftCreation, &ftExit, &ftKernel, &ftUser)) {
-            ULONGLONG startTime, currentTime;
-
-            startTime = FileTimeToQuad(ftCreation);
-
-            FILETIME ftCurrent;
-            GetSystemTimeAsFileTime(&ftCurrent);
-            currentTime = FileTimeToQuad(ftCurrent);
 
 
-            double uptimeSeconds = static_cast<double>(currentTime - startTime) / 10000000.0;
-            DWORD processId = GetProcessId(curr_process);
-
-            std::cout << "PID " << processId << " uptime: " << uptimeSeconds << " seconds.\n";
-        }
-    }
-}
-*/

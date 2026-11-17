@@ -215,7 +215,7 @@ int main(int, char**)
         ImGui_ImplWin32_NewFrame();
         ImGui::NewFrame();
         ImGui::SetNextWindowSize(ImVec2(30.0f, 30.0f), ImGuiCond_FirstUseEver);
-
+  
         //START----------------------------------------------------------------------------------------------------------------------
         ImGui::Begin("TASK_MANAGER", &app_open, window_flags);
 
@@ -269,13 +269,13 @@ int main(int, char**)
         ImVec2 Matrix_pos = ImVec2(origin.x, origin.y + 85);
         ImVec2 Matrix_pos_under = ImVec2(origin.x, origin.y + 585);
         ImVec2 Matrix_pos_under_small = ImVec2(origin.x + 527, origin.y + 585);
-
-        // Pass local_processes
+     
+        // Pass local_processess
         DrawMergedMatrix(draw_list, Matrix_pos, local_matrix, local_processes, totalPhysMB, 1, true, g_pd3dDevice, fontmed);
         DrawMergedMatrix(draw_list, Matrix_pos_under, local_matrix_under, local_processes, totalPhysMB, 2, true, g_pd3dDevice, fontmed);
         DrawMergedMatrix(draw_list, Matrix_pos_under_small, local_matrix_under_small, local_processes, totalPhysMB, 3, false, g_pd3dDevice, fontmed);
 
-        // DRAW UI PANELS
+        // DRAW UI PANELS test
         UpdateAndDrawUI_RAM(draw_list, origin, fontmed);
         UpdateAndDrawUI_CPU(draw_list, origin, fontmed);
         UpdateAndDrawUI_NET(draw_list, origin, fontmed);
